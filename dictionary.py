@@ -7,9 +7,9 @@ from sortedcontainers import SortedDict
 
 k=10				#number of children
 p = 6				#no of children for active search
-Max_number = 500	#max no of values in a leaf node
-word_radius  = 100	#represents size of words in dictionary
-cluster_no = 16		#no of words formed with new image
+Max_number = 500		#max no of values in a leaf node
+word_radius  = 100		#represents size of words in dictionary
+cluster_no = 16			#no of words formed with new image
 prob_lc = np.array(1)
 words = {}
 common_words = {}
@@ -175,10 +175,7 @@ class Node:
 		# compare if 0 return
 		bf = cv2.BFMatcher()
 		matches = bf.match(f.reshape(1,128),self.key)
-		#print("base case for search_insert")
-		#print (len(matches))
-		#print (matches[0].distance,matches[0].trainIdx,matches[0].queryIdx,matches[0].imgIdx)
-		
+				
 		if(matches[0].distance < word_radius):
 			word_list = None
 			self.imno.append(imageno)
@@ -223,11 +220,8 @@ class Node:
 						#print("at 2")
 						return temp
 					elif min_dist >  match.distance:
-						#print ("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 						word_list = temp
 				
-		#if (word_list==None):
-			#print("at 3")
 
 		return word_list
 		
@@ -238,9 +232,6 @@ class Node:
 		# compare if 0 return
 		bf = cv2.BFMatcher()
 		matches = bf.match(f.reshape(1,128),self.key)
-		#print("base case for search_insert")
-		#print (len(matches))
-		#print (matches[0].distance,matches[0].trainIdx,matches[0].queryIdx,matches[0].imgIdx)
 		
 		if(matches[0].distance < word_radius):
 			word_list.append(self.key)
@@ -276,8 +267,6 @@ class Node:
 					img_list+=imlist
 					
 
-		#if (word_list==None):
-			#print("at 3")
 
 		return word_list,img_list
 		
@@ -322,7 +311,7 @@ def likelihood(kmeans,Dictionary,imno):
 			if(ele<imno):
 				score_list[ele+1] += tf
 	if sum(score_list)==0:
-		print ("hPPEN-------")
+		
 		return np.ones(imno+1)
 	mean_val = np.mean(score_list)
 	std = np.std(score_list)
@@ -401,14 +390,8 @@ while(True):
 				leaf_insertion = Dictionary.search_insert(c_center,imno)
 				if (leaf_insertion != None):
 					leaf_insertion.insert(c_center,dist[d_val],imno)
-				else:
-					print ("--------------------------first image--------------" , leaf_insertion)
 				d_val+=1
 			
-			'''
-			for c_center in kmeans.cluster_centers_[1:]:
-				Dictionary.AddValues(c_center,imno)
-			'''
 		else:
 			dist = find_word_radius(kmeans,des)
 			d_val = 0
@@ -442,8 +425,6 @@ while(True):
 				if (leaf_insertion != None):
 				
 					leaf_insertion.insert(c_center,dist[d_val],imno)
-				#else:
-					#print ("----------------------------------------" , leaf_insertion)
 				d_val+=1
 		
 		imno+=1
@@ -453,14 +434,6 @@ while(True):
 		if cv2.waitKey(1) & 0xFF == ord('q'):
 			break
 			
-		'''
-		
-		
-		except:
-			print("w")
-			break
-			print ("ddd",no)
-		'''
 	no+=1
 
 	
